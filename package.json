@@ -1,7 +1,7 @@
 {
   "name": "@hypericon/utils",
   "version": "0.2.0",
-  "description": "Utilities and formatters with zero dependencies",
+  "description": "Utility and formatting functions with no dependencies",
   "author": "Ed Johnson, Hypericon Ltd.",
   "license": "MIT",
   "main": "dist/utils.js",
