@@ -4,7 +4,7 @@
   "description": "Utility and formatting functions with no dependencies",
   "author": "Ed Johnson, Hypericon Ltd.",
   "license": "MIT",
-  "main": "dist/utils.js",
+  "main": "dist/index.js",
   "scripts": {
     "dev": "rimraf dist && tsc -w --preserveWatchOutput",
     "example": "node dist/example/example.js",
