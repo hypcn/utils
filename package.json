@@ -1,6 +1,6 @@
 {
   "name": "@hypericon/utils",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Utility and formatting functions with no dependencies",
   "author": "Ed Johnson, Hypericon Ltd.",
   "license": "MIT",
