@@ -1,4 +1,4 @@
-import { dereference, isObject, mergeDeep, sortByKeyFn, wait } from "../src";
+import { deduplicate, dereference, isObject, mergeDeep, sortByKeyFn, wait } from "../src";
 
 describe("Misc functions", () => {
 
@@ -48,6 +48,14 @@ describe("Misc functions", () => {
 
   });
 
+  describe("deduplicate", () => {
+
+    it("deduplicates a list", async () => {
+      expect(deduplicate([1, 2, 2, 3, 3, 3, 4, 4, 4, 4])).toMatchObject([1, 2, 3, 4]);
+    });
+
+  });
+
   describe("sortByKeyFn", () => {
 
     it("builds a sort function", () => {
@@ -58,9 +66,11 @@ describe("Misc functions", () => {
       ];
       list.sort(sortByKeyFn("name"));
 
-      expect(list[0]).toMatchObject({ name: "Adam" });
-      expect(list[1]).toMatchObject({ name: "Brian" });
-      expect(list[2]).toMatchObject({ name: "Charlie" });
+      expect(list).toMatchObject([
+        { name: "Adam" },
+        { name: "Brian" },
+        { name: "Charlie" },
+      ]);
     });
 
     it("builds a sort function explicitly ascending", () => {
@@ -71,9 +81,11 @@ describe("Misc functions", () => {
       ];
       list.sort(sortByKeyFn("name", "asc"));
 
-      expect(list[0]).toMatchObject({ name: "Adam" });
-      expect(list[1]).toMatchObject({ name: "Brian" });
-      expect(list[2]).toMatchObject({ name: "Charlie" });
+      expect(list).toMatchObject([
+        { name: "Adam" },
+        { name: "Brian" },
+        { name: "Charlie" },
+      ]);
     });
 
     it("builds a sort function descending", () => {
@@ -84,9 +96,11 @@ describe("Misc functions", () => {
       ];
       list.sort(sortByKeyFn("name", "desc"));
 
-      expect(list[0]).toMatchObject({ name: "Charlie" });
-      expect(list[1]).toMatchObject({ name: "Brian" });
-      expect(list[2]).toMatchObject({ name: "Adam" });
+      expect(list).toMatchObject([
+        { name: "Charlie" },
+        { name: "Brian" },
+        { name: "Adam" },
+      ]);
     });
 
   });
@@ -107,10 +121,10 @@ describe("Misc functions", () => {
   describe("mergeDeep", () => {
 
     it("correctly merges objects", () => {
-      
+
       const target = {
         a: 1,
-        b: [1,2,3],
+        b: [1, 2, 3],
         c: {
           d: {
             e: 1234,

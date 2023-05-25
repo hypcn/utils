@@ -24,6 +24,14 @@ export async function wait(durationMs: number) {
 }
 
 /**
+ * Simple typed deduplication of a list using a Set
+ * @param list 
+ */
+export function deduplicate<T>(list: T[]): T[] {
+  return [...new Set(list)];
+}
+
+/**
  * Build a sort function that naiively sorts by the given key on each object (using < and >)
  * @param key 
  * @param direction 

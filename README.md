@@ -1,7 +1,9 @@
 
 # Utils
 
-Utility and formatting functions with no dependencies, for the browser and the server.
+Utility and formatting functions with no dependencies, for the browser and the server, with helpful type definitions*.
+
+<small>*there are a couple of exceptions</small>
 
 ![npm (scoped)](https://img.shields.io/npm/v/@hypericon/utils)
 
@@ -19,7 +21,7 @@ npm i @hypericon/utils
 ## Misc
 
 ```typescript
-import { dereference, wait, isObject, mergeDeep } from "@hypericon/utils";
+import { dereference, wait, deduplicate, sortByKeyFn, isObject, mergeDeep } from "@hypericon/utils";
 
 // Create a copy of an object without a reference to the original
 const o = { an: "object" };
@@ -32,6 +34,9 @@ console.log(dereference(undefined)); // undefined
 async func() {
   await wait(2000); // waits for 2,000 ms
 }
+
+// Deduplicate a list using strict equality
+deduplicate([1, 2, 2, 3, 3, 3]); // [1, 2, 3]
 
 // Build a function to easily sort a list of objects by the value of a specified key
 const list = [
@@ -148,10 +153,12 @@ timestampToDateTime(1679051024444, { secs: false }); // "2023-03-17 11:03"
 ```typescript
 import { millisTo24Hour, millisToPrettyDuration } from "@hypericon/utils";
 
+// Convert a number fo milliseconds to a 24-hour HH:mm string
 millisTo24Hour(123456789); // "10:18"
 millisTo24Hour(-123456789); // "13:42"
 millisTo24Hour(12345678912345); // "19:15"
 
+// Format a number of milliseconds as a human-readable string with appropriate units. Includes up to 2 distinct units be default.
 millisToPrettyDuration(12345); // "12 secs, 345 ms"
 millisToPrettyDuration(1234567); // "20 mins, 34 secs"
 millisToPrettyDuration(123456789); // "1 day, 10 hours"
