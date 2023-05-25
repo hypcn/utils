@@ -1,4 +1,4 @@
-import { dereference, isObject, mergeDeep } from "../src";
+import { compareObjects, dereference, isObject, mergeDeep } from "../src";
 
 describe("Object functions", () => {
 
@@ -108,6 +108,82 @@ describe("Object functions", () => {
 
     it("merges multiple sources", () => {
       expect(mergeDeep({ a: 1 }, { b: 2 }, { c: 3 })).toMatchObject({ a: 1, b: 2, c: 3 });
+    });
+
+  });
+
+  describe("compareObjects", () => {
+
+    it("handles null and undefined parameters", () => {
+      expect(compareObjects(undefined, undefined)).toBe(true);
+      expect(compareObjects(null, null)).toBe(true);
+
+      expect(compareObjects({ an: "object" }, undefined)).toBe(false);
+      expect(compareObjects({ an: "object" }, null)).toBe(false);
+      expect(compareObjects(undefined, { an: "object" })).toBe(false);
+      expect(compareObjects(null, { an: "object" })).toBe(false);
+    });
+
+    it("compares flat objects", () => {
+      expect(compareObjects({ an: "object" }, { an: "object" })).toBe(true);
+      expect(compareObjects({ an: "object" }, { an: "object", b: "b" })).toBe(false);
+
+      expect(compareObjects({ key: "object" }, { key: 12345 })).toBe(false);
+      expect(compareObjects({ key: 1234 }, { key: NaN })).toBe(false);
+
+    });
+
+    it("compares nested objects", () => {
+
+      expect(compareObjects(
+        { key: { num: 12 } },
+        { key: { num: 12 } },
+      )).toBe(true);
+
+      expect(compareObjects(
+        { key: { num: 12 }, key2: 34 },
+        { key2: 34, key: { num: 12 } },
+      )).toBe(true);
+
+      expect(compareObjects(
+        { key: { nest: { nest2: 12 } } },
+        { key: { nest: { nest2: 12 } } },
+      )).toBe(true);
+
+      expect(compareObjects(
+        { key: { nest: { nest2: 12 } } },
+        { key: { nest: { no: 12345 } } },
+      )).toBe(false);
+
+    });
+
+    it("compares array values", () => {
+
+      expect(compareObjects(
+        { key: [1, 2, 3] },
+        { key: [1, 2, 3] },
+      )).toBe(true);
+
+      expect(compareObjects(
+        { key: [1, 2, 3] },
+        { key: [1, 2, 3, 4] },
+      )).toBe(false);
+
+      expect(compareObjects(
+        { key: [1, 2, 3] },
+        { key: [3, 2, 1] },
+      )).toBe(false);
+
+      expect(compareObjects(
+        { key: [1, 2, 3] },
+        { key: { "1": 1, "2": 2, "3": 3, } },
+      )).toBe(false);
+
+      expect(compareObjects(
+        { key: [{ in: "array" }] },
+        { key: [{ in: "array" }] },
+      )).toBe(true);
+
     });
 
   });

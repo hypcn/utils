@@ -109,7 +109,7 @@ millisToPrettyDuration(123456, 4); // "2 mins, 3 secs, 456 ms"
 ## Objects
 
 ```typescript
-import { dereference, isObject, mergeDeep } from "@hypericon/utils";
+import { dereference, isObject, mergeDeep, compareObjects } from "@hypericon/utils";
 
 // Create a copy of an object without a reference to the original
 const o = { an: "object" };
@@ -157,6 +157,12 @@ mergeDeep(
 //   e: 555,
 //   list: [10, 20, 30],
 // }
+
+// Compare two objects deeply
+compareObjects({ an: "object" }, undefined); // false
+compareObjects({ an: "object" }, { an: "object" }); // true
+compareObjects({ with: { nested: "keys" } }, { with: { nested: "keys" } }); // true
+compareObjects({ with: { nested: "keys" } }, { with: { nested: "ERROR" } }); // false
 ```
 
 ## Lists
