@@ -17,79 +17,18 @@ npm i @hypericon/utils
 - [Numbers](#numbers)
 - [Dates & Times](#dates_times)
 - [Durations](#durations)
+- [Objects](#objects)
+- [Lists](#lists)
 
 ## Misc
 
 ```typescript
-import { dereference, wait, deduplicate, sortByKeyFn, isObject, mergeDeep } from "@hypericon/utils";
-
-// Create a copy of an object without a reference to the original
-const o = { an: "object" };
-const d = dereference(o);
-console.log(d); // { an: "object" }
-console.log(o === d); // false
-console.log(dereference(undefined)); // undefined
+import { wait } from "@hypericon/utils";
 
 // A simple function returning a promise that resolves after the given number of milliseconds
 async func() {
   await wait(2000); // waits for 2,000 ms
 }
-
-// Deduplicate a list using strict equality
-deduplicate([1, 2, 2, 3, 3, 3]); // [1, 2, 3]
-
-// Build a function to easily sort a list of objects by the value of a specified key
-const list = [
-  { name: "Adam" },
-  { name: "Charlie" },
-  { name: "Brian" },
-];
-list.sort(sortByKeyFn("name"));
-// list = [
-//   { name: "Adam" }
-//   { name: "Brian" }
-//   { name: "Charlie" }
-// ];
-
-// Determine if a value is defined, and an object, and not an array
-isObject(undefined); // false
-isObject("dog"); // false
-isObject(null); // false
-isObject([1, 2, 3]); // false
-isObject({ an: "object" }); // true
-
-// Deeply merge two or more objects
-mergeDeep({ an: "object" }, undefined); // { an: "object" }
-mergeDeep(undefined, { an: "object" }); // { an: "object" }
-mergeDeep({ a: 1 }, { b: 2 }, { c: 3 }); // { a: 1, b: 2, c: 3 }
-mergeDeep(
-  {
-    a: {
-      b: 123,
-      c: 456, // `c` is unchanged
-    },
-    r: 77,
-    list: [1,2,3],
-  },
-  {
-    a: {
-      b: 222, // `b` is updated
-      d: 444, // `d` is added
-    },
-    e: 555, // `e` is added
-    r: undefined, // `r` is removed
-    list: [10, 20, 30], // `list` is replaced
-  },
-);
-// {
-//   a: {
-//     b: 222,
-//     c: 456,
-//     d: 444
-//   },
-//   e: 555,
-//   list: [10, 20, 30],
-// }
 ```
 
 ## Numbers
@@ -166,3 +105,90 @@ millisToPrettyDuration(9876543210); // "3 months, 24 days"
 millisToPrettyDuration(9876543210, 4); // "3 months, 24 days, 7 hours, 29 mins"
 millisToPrettyDuration(123456, 4); // "2 mins, 3 secs, 456 ms"
 ```
+
+## Objects
+
+```typescript
+import { dereference, isObject, mergeDeep } from "@hypericon/utils";
+
+// Create a copy of an object without a reference to the original
+const o = { an: "object" };
+const d = dereference(o);
+console.log(d); // { an: "object" }
+console.log(o === d); // false
+console.log(dereference(undefined)); // undefined
+
+// Determine if a value is defined, and an object, and not an array
+isObject(undefined); // false
+isObject("dog"); // false
+isObject(null); // false
+isObject([1, 2, 3]); // false
+isObject({ an: "object" }); // true
+
+// Deeply merge two or more objects
+mergeDeep({ an: "object" }, undefined); // { an: "object" }
+mergeDeep(undefined, { an: "object" }); // { an: "object" }
+mergeDeep({ a: 1 }, { b: 2 }, { c: 3 }); // { a: 1, b: 2, c: 3 }
+mergeDeep(
+  {
+    a: {
+      b: 123,
+      c: 456, // `c` is unchanged
+    },
+    r: 77,
+    list: [1,2,3],
+  },
+  {
+    a: {
+      b: 222, // `b` is updated
+      d: 444, // `d` is added
+    },
+    e: 555, // `e` is added
+    r: undefined, // `r` is removed
+    list: [10, 20, 30], // `list` is replaced
+  },
+);
+// {
+//   a: {
+//     b: 222,
+//     c: 456,
+//     d: 444
+//   },
+//   e: 555,
+//   list: [10, 20, 30],
+// }
+```
+
+## Lists
+
+```typescript
+import { deduplicate, sortByKeyFn, findDuplicates } from "@hypericon/utils";
+
+// Deduplicate a list using strict equality
+deduplicate([1, 2, 2, 3, 3, 3]); // [1, 2, 3]
+
+// Build a function to easily sort a list of objects by the value of a specified key
+const list = [
+  { name: "Adam" },
+  { name: "Charlie" },
+  { name: "Brian" },
+];
+list.sort(sortByKeyFn("name"));
+// list = [
+//   { name: "Adam" }
+//   { name: "Brian" }
+//   { name: "Charlie" }
+// ];
+
+// Find the duplicates in a list
+findDuplicates([1, 2, 2, 3, 4, 4, 4]); // [2, 4]
+// Optionally supply a custom comparison function
+const list = [
+  { name: "Dave" },
+  { name: "davE" },
+  { name: "Brian" },
+];
+const comparisonFn = (a, b) => a.name.toLowerCase() === b.name.toLowerCase();
+findDuplicates(list, comparisonFn); // [{ name: "Dave" }]
+```
+
