@@ -24,6 +24,28 @@ export async function wait(durationMs: number) {
 }
 
 /**
+ * Build a sort function that naiively sorts by the given key on each object (using < and >)
+ * @param key 
+ * @param direction 
+ * @returns 
+ */
+export function sortByKeyFn<K extends keyof T, T = any>(key: K, direction: "asc" | "desc" = "asc"): (a: T, b: T) => number {
+  if (direction === "asc") {
+    return (a, b) => {
+      if (a[key] < b[key]) return -1;
+      if (a[key] > b[key]) return 1;
+      return 0;
+    };
+  } else {
+    return (a, b) => {
+      if (a[key] < b[key]) return 1;
+      if (a[key] > b[key]) return -1;
+      return 0;
+    };
+  }
+}
+
+/**
    * Determines if the parameter is defined, and an object, and not an array.
    * @param toTest
    * @returns {boolean}

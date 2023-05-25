@@ -1,4 +1,4 @@
-import { dereference, isObject, mergeDeep, wait } from "../src";
+import { dereference, isObject, mergeDeep, sortByKeyFn, wait } from "../src";
 
 describe("Misc functions", () => {
 
@@ -44,6 +44,49 @@ describe("Misc functions", () => {
       clearTimeout(tooLateTimeout);
       if (tooEarly) throw "too early";
       return;
+    });
+
+  });
+
+  describe("sortByKeyFn", () => {
+
+    it("builds a sort function", () => {
+      const list = [
+        { name: "Adam" },
+        { name: "Charlie" },
+        { name: "Brian" },
+      ];
+      list.sort(sortByKeyFn("name"));
+
+      expect(list[0]).toMatchObject({ name: "Adam" });
+      expect(list[1]).toMatchObject({ name: "Brian" });
+      expect(list[2]).toMatchObject({ name: "Charlie" });
+    });
+
+    it("builds a sort function explicitly ascending", () => {
+      const list = [
+        { name: "Adam" },
+        { name: "Charlie" },
+        { name: "Brian" },
+      ];
+      list.sort(sortByKeyFn("name", "asc"));
+
+      expect(list[0]).toMatchObject({ name: "Adam" });
+      expect(list[1]).toMatchObject({ name: "Brian" });
+      expect(list[2]).toMatchObject({ name: "Charlie" });
+    });
+
+    it("builds a sort function descending", () => {
+      const list = [
+        { name: "Adam" },
+        { name: "Charlie" },
+        { name: "Brian" },
+      ];
+      list.sort(sortByKeyFn("name", "desc"));
+
+      expect(list[0]).toMatchObject({ name: "Charlie" });
+      expect(list[1]).toMatchObject({ name: "Brian" });
+      expect(list[2]).toMatchObject({ name: "Adam" });
     });
 
   });

@@ -21,26 +21,42 @@ npm i @hypericon/utils
 ```typescript
 import { dereference, wait, isObject, mergeDeep } from "@hypericon/utils";
 
+// Create a copy of an object without a reference to the original
 const o = { an: "object" };
 const d = dereference(o);
 console.log(d); // { an: "object" }
 console.log(o === d); // false
 console.log(dereference(undefined)); // undefined
 
+// A simple function returning a promise that resolves after the given number of milliseconds
 async func() {
   await wait(2000); // waits for 2,000 ms
 }
 
+// Build a function to easily sort a list of objects by the value of a specified key
+const list = [
+  { name: "Adam" },
+  { name: "Charlie" },
+  { name: "Brian" },
+];
+list.sort(sortByKeyFn("name"));
+// list = [
+//   { name: "Adam" }
+//   { name: "Brian" }
+//   { name: "Charlie" }
+// ];
+
+// Determine if a value is defined, and an object, and not an array
 isObject(undefined); // false
 isObject("dog"); // false
 isObject(null); // false
 isObject([1, 2, 3]); // false
 isObject({ an: "object" }); // true
 
+// Deeply merge two or more objects
 mergeDeep({ an: "object" }, undefined); // { an: "object" }
 mergeDeep(undefined, { an: "object" }); // { an: "object" }
 mergeDeep({ a: 1 }, { b: 2 }, { c: 3 }); // { a: 1, b: 2, c: 3 }
-
 mergeDeep(
   {
     a: {
