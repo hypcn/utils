@@ -16,6 +16,7 @@ describe("Misc functions", () => {
       const list = [
         { name: "Adam" },
         { name: "Charlie" },
+        { name: "Charlie" },
         { name: "Brian" },
       ];
       list.sort(sortByKeyFn("name"));
@@ -24,12 +25,14 @@ describe("Misc functions", () => {
         { name: "Adam" },
         { name: "Brian" },
         { name: "Charlie" },
+        { name: "Charlie" },
       ]);
     });
 
     it("builds a sort function explicitly ascending", () => {
       const list = [
         { name: "Adam" },
+        { name: "Charlie" },
         { name: "Charlie" },
         { name: "Brian" },
       ];
@@ -39,6 +42,7 @@ describe("Misc functions", () => {
         { name: "Adam" },
         { name: "Brian" },
         { name: "Charlie" },
+        { name: "Charlie" },
       ]);
     });
 
@@ -46,11 +50,13 @@ describe("Misc functions", () => {
       const list = [
         { name: "Adam" },
         { name: "Charlie" },
+        { name: "Charlie" },
         { name: "Brian" },
       ];
       list.sort(sortByKeyFn("name", "desc"));
 
       expect(list).toMatchObject([
+        { name: "Charlie" },
         { name: "Charlie" },
         { name: "Brian" },
         { name: "Adam" },
