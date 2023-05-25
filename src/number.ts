@@ -99,3 +99,25 @@ export function numberToSigFigsSI<T extends number | undefined>(value: T, sigFig
 export function ratioToPercentage(ratio: number, decimalPlaces = 0): string {
   return (ratio * 100).toFixed(decimalPlaces);
 }
+
+/**
+ * Format a number of bytes as a string, including units
+ * 
+ * From https://stackoverflow.com/a/18650828
+ * @param bytes 
+ * @param opts optionally specify a number of decimal places, and whether to use 1000 instead of 1024
+ * @returns 
+ */
+export function numberToBytes(bytes: number, opts?: { decimals?: number, tenCubed?: boolean }): string {
+
+  if (bytes === 0) return '0 Bytes';
+  if (!bytes) return '0 Bytes';
+
+  const k = opts?.tenCubed === true ? 1000 : 1024;
+  const dm = Math.max(opts?.decimals ?? 0, 0);
+  const sizes = ['Bytes', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}

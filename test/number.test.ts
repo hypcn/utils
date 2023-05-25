@@ -1,4 +1,4 @@
-import { clamp, numberToSigFigs, numberToSigFigsSI, ratioToPercentage, sum } from "../src";
+import { clamp, numberToBytes, numberToSigFigs, numberToSigFigsSI, ratioToPercentage, sum } from "../src";
 
 describe("Number functions", () => {
 
@@ -79,6 +79,42 @@ describe("Number functions", () => {
       expect(ratioToPercentage(0, 2)).toBe("0.00");
       expect(ratioToPercentage(1, 3)).toBe("100.000");
       expect(ratioToPercentage(0.55555, 2)).toBe("55.55"); // uses toFixed
+    });
+
+  });
+
+  describe("numberToBytes", () => {
+
+    it("formats a number as bytes", () => {
+      expect(numberToBytes(0)).toBe("0 Bytes");
+      expect(numberToBytes(120)).toBe("120 Bytes");
+      expect(numberToBytes(120_000)).toBe("117 kB");
+      expect(numberToBytes(120_000_000)).toBe("114 MB");
+      expect(numberToBytes(120_000_000_000)).toBe("112 GB");
+      expect(numberToBytes(120_000_000_000_000)).toBe("109 TB");
+      expect(numberToBytes(120_000_000_000_000_000)).toBe("107 PB");
+      expect(numberToBytes(120_000_000_000_000_000_000)).toBe("104 EB");
+      expect(numberToBytes(120_000_000_000_000_000_000_000)).toBe("102 ZB");
+      expect(numberToBytes(120_000_000_000_000_000_000_000_000)).toBe("99 YB");
+    });
+
+    it("handles invalid input", () => {
+      expect(numberToBytes(undefined!)).toBe("0 Bytes");
+      expect(numberToBytes(null!)).toBe("0 Bytes");
+    });
+
+    it("formats decimal places", () => {
+      expect(numberToBytes(120_000, { decimals: 1 })).toBe("117.2 kB");
+      expect(numberToBytes(120_000, { decimals: 2 })).toBe("117.19 kB");
+      expect(numberToBytes(120_000, { decimals: 3 })).toBe("117.188 kB");
+      expect(numberToBytes(120_000, { decimals: 4 })).toBe("117.1875 kB");
+      expect(numberToBytes(121_000, { decimals: 5 })).toBe("118.16406 kB");
+    });
+
+    it("can use 10^3 instead of 2^10", () => {
+      expect(numberToBytes(120_000, { tenCubed: true })).toBe("120 kB");
+      expect(numberToBytes(120_000_000, { tenCubed: true })).toBe("120 MB");
+      expect(numberToBytes(120_000_000_000, { tenCubed: true })).toBe("120 GB");
     });
 
   });
