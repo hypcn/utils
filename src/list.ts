@@ -59,3 +59,35 @@ export function findDuplicates<T>(list: T[], compareFn?: (a: T, b: T) => boolean
 
   return dupes;
 }
+
+/**
+ * Collapse a given list of elements into a deduplicated list of tuples of
+ * - the list item
+ * - the count of the item in the list
+ * 
+ * The de-duplicated items are returned in the same order as their first ocurrences in the original list
+ * 
+ * E.g.: `[2, 2, 2, 1, 3, 3] => [{ item: 2, count: 3 }, { item: 1, count: 1 }, { item: 3, count: 2 }]`
+ * @param list 
+ * @param compareFn An optional function to compare elements, otherwise absolute equality is used
+ * @returns 
+ */
+export function collapseDuplicates<T>(list: T[], compareFn?: (a: T, b: T) => boolean): { item: T, count: number }[] {
+
+  const collapsed: { item: T, count: number }[] = [];
+  const compare: (a: T, b: T) => boolean = compareFn ?? ((a: T, b: T) => a === b);
+
+  for (let i = 0; i < list.length; i++) {
+    const elem = list[i];
+
+    const existing = collapsed.find(c => compare(c.item, elem));
+
+    if (existing) {
+      existing.count++;
+    } else {
+      collapsed.push({ item: elem, count: 1 });
+    }
+  }
+
+  return collapsed;
+}

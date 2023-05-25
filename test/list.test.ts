@@ -1,4 +1,4 @@
-import { deduplicate, findDuplicates, sortByKeyFn } from "../src";
+import { collapseDuplicates, deduplicate, findDuplicates, sortByKeyFn } from "../src";
 
 describe("Misc functions", () => {
 
@@ -76,6 +76,33 @@ describe("Misc functions", () => {
         return a.name.toLowerCase() === b.name.toLowerCase();
       };
       expect(findDuplicates(list, comparisonFn)).toMatchObject([{ name: "Dave" }]);
+    });
+
+  });
+
+  describe("collapseDuplicates", () => {
+
+    it("collapses duplicates", () => {
+      expect(collapseDuplicates([2, 2, 2, 1, 3, 3])).toMatchObject([
+        { item: 2, count: 3 },
+        { item: 1, count: 1 },
+        { item: 3, count: 2 },
+      ]);
+    });
+
+    it("accepts a custom comparison function", () => {
+      const list = [
+        { name: "Dave" },
+        { name: "davE" },
+        { name: "Brian" },
+      ];
+      const comparisonFn = (a: { name: string }, b: { name: string }) => {
+        return a.name.toLowerCase() === b.name.toLowerCase();
+      };
+      expect(collapseDuplicates(list, comparisonFn)).toMatchObject([
+        { item: { name: "Dave" }, count: 2 },
+        { item: { name: "Brian" }, count: 1 },
+      ]);
     });
 
   });

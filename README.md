@@ -162,7 +162,7 @@ mergeDeep(
 ## Lists
 
 ```typescript
-import { deduplicate, sortByKeyFn, findDuplicates } from "@hypericon/utils";
+import { deduplicate, sortByKeyFn, findDuplicates, collapseDuplicates } from "@hypericon/utils";
 
 // Deduplicate a list using strict equality
 deduplicate([1, 2, 2, 3, 3, 3]); // [1, 2, 3]
@@ -182,6 +182,7 @@ list.sort(sortByKeyFn("name"));
 
 // Find the duplicates in a list
 findDuplicates([1, 2, 2, 3, 4, 4, 4]); // [2, 4]
+
 // Optionally supply a custom comparison function
 const list = [
   { name: "Dave" },
@@ -190,5 +191,17 @@ const list = [
 ];
 const comparisonFn = (a, b) => a.name.toLowerCase() === b.name.toLowerCase();
 findDuplicates(list, comparisonFn); // [{ name: "Dave" }]
+
+// Collapse duplicate items in a list, returning the items in the original order of
+// their first occurrence and the number of times they occur in the list
+collapseDuplicates([2, 2, 2, 1, 3, 3]);
+// [ { item: 2, count: 3 }, { item: 1, count: 1 }, { item: 3, count: 2 } ]]
+
+// Optionally supply a custom comparison function
+// (`list` and `comparisonFn` defined above)
+expect(collapseDuplicates(list, comparisonFn)).toMatchObject([
+  { item: { name: "Dave" }, count: 2 },
+  { item: { name: "Brian" }, count: 1 },
+]);
 ```
 
