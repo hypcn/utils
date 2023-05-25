@@ -11,6 +11,21 @@ export function clamp(value: number, min: number, max: number): number {
 }
 
 /**
+ * Finds the sum of some numbers, ignoreing `undefined` `null` and `NaN` values
+ * @param numbers 
+ * @returns 
+ */
+export function sum(...numbers: (number | undefined | null)[]) {
+  let total = 0;
+  for (const n of numbers) {
+    if (typeof n === "number" && !Number.isNaN(n)) {
+      total += n;
+    }
+  }
+  return total;
+}
+
+/**
  * Round a number to a given number of significant figures.
  * This avoids the exponent strings from `toPrecision(x)`.
  * If `undefined` is provided as the value, `undefined` is returned.

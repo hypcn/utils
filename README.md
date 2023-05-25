@@ -1,7 +1,7 @@
 
 # Utils
 
-Utility and formatting functions with no dependencies.
+Utility and formatting functions with no dependencies, for the browser and the server.
 
 ![npm (scoped)](https://img.shields.io/npm/v/@hypericon/utils)
 
@@ -90,18 +90,26 @@ mergeDeep(
 ## Numbers
 
 ```typescript
-import { clamp, numberToSigFigs, numberToSigFigsSI } from "@hypericon/utils";
+import { clamp, sum, numberToSigFigs, numberToSigFigsSI } from "@hypericon/utils";
 
+// Clamp a value to a given range
 clamp(-12, 100, 200); // 100
 
+// Find the sum of some number, ignoring undefined, null, and NaN
+sum(1, 2, 3); // 6
+sum(undefined, null, NaN, 5); // 5
+
+// Round a value to a number of significant figured (default: 3)
 numberToSigFigs(3579); // 3580
 numberToSigFigs(3579, 2); // 3600
 numberToSigFigs(undefined); // undefined
 
+// Convert a number to a string with a number of significant figures (default 3),
+// and an appripriate SI suffix from "femto-" (10^-15) to "Peta-" (10^15)
 numberToSigFigsSI(123456); // "123k"
 numberToSigFigsSI(12345678); // "12.3M"
 numberToSigFigsSI(0.000123, 2); // "120µ"
-numberToSigFigsSI(undefined); // undefined
+numberToSigFigsSI(undefined); // "undefined"
 ```
 
 ## Dates & Times

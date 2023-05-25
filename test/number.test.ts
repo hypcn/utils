@@ -1,4 +1,4 @@
-import { clamp, numberToSigFigs, numberToSigFigsSI } from "../src";
+import { clamp, numberToSigFigs, numberToSigFigsSI, sum } from "../src";
 
 describe("Number functions", () => {
 
@@ -8,6 +8,16 @@ describe("Number functions", () => {
       expect(clamp(v, 0, 100)).toBe(v);
       expect(clamp(-10, 0, 100)).toBe(0);
       expect(clamp(1000, 0, 100)).toBe(100);
+    });
+  });
+
+  describe("sum", () => {
+    it("find the sum of values", () => {
+      expect(sum(1, 2, 3)).toBe(6);
+      expect(sum()).toBe(0);
+    });
+    it("handles incorrect parameters", () => {
+      expect(sum(undefined, null, NaN, 5)).toBe(5);
     });
   });
 
