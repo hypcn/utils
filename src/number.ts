@@ -89,3 +89,13 @@ export function numberToSigFigsSI<T extends number | undefined>(value: T, sigFig
 
   return value.toString();
 }
+
+/**
+ * Formats numbers from the range 0 -> 1 as a string in the range 0 -> 100 with a number of decimal places
+ * @param ratio 
+ * @param decimalPlaces The number of decimal places (default = 0)
+ * @returns 
+ */
+export function ratioToPercentage(ratio: number, decimalPlaces = 0): string {
+  return (ratio * 100).toFixed(decimalPlaces);
+}

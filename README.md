@@ -34,7 +34,7 @@ async func() {
 ## Numbers
 
 ```typescript
-import { clamp, sum, numberToSigFigs, numberToSigFigsSI } from "@hypericon/utils";
+import { clamp, sum, numberToSigFigs, numberToSigFigsSI, ratioToPercentage } from "@hypericon/utils";
 
 // Clamp a value to a given range
 clamp(-12, 100, 200); // 100
@@ -54,6 +54,13 @@ numberToSigFigsSI(123456); // "123k"
 numberToSigFigsSI(12345678); // "12.3M"
 numberToSigFigsSI(0.000123, 2); // "120µ"
 numberToSigFigsSI(undefined); // "undefined"
+
+// Format a ratio as a percentage string, with an optional number of decimal places
+ratioToPercentage(0.12); // "12"
+ratioToPercentage(-0.12); // "-12"
+ratioToPercentage(1.2); // "120"
+ratioToPercentage(0.12345, 2); // "12.34"
+ratioToPercentage(0.12, 3); // "12.000"
 ```
 
 ## Dates & Times

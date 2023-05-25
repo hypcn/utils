@@ -1,4 +1,4 @@
-import { clamp, numberToSigFigs, numberToSigFigsSI, sum } from "../src";
+import { clamp, numberToSigFigs, numberToSigFigsSI, ratioToPercentage, sum } from "../src";
 
 describe("Number functions", () => {
 
@@ -59,6 +59,26 @@ describe("Number functions", () => {
 
     it("ignores values larger than 1e15", () => {
       expect(numberToSigFigsSI(1e30)).toBe(1e30.toString());
+    });
+
+  });
+
+  describe("ratioToPercentage", () => {
+
+    it("converts ratios to percentages", () => {
+      expect(ratioToPercentage(0.12)).toBe("12");
+      expect(ratioToPercentage(-0.12)).toBe("-12");
+      expect(ratioToPercentage(1.2)).toBe("120");
+      expect(ratioToPercentage(0)).toBe("0");
+      expect(ratioToPercentage(1)).toBe("100");
+      expect(ratioToPercentage(0.1234)).toBe("12");
+    });
+
+    it("formats decimal places", () => {
+      expect(ratioToPercentage(0.12, 2)).toBe("12.00");
+      expect(ratioToPercentage(0, 2)).toBe("0.00");
+      expect(ratioToPercentage(1, 3)).toBe("100.000");
+      expect(ratioToPercentage(0.55555, 2)).toBe("55.55"); // uses toFixed
     });
 
   });
