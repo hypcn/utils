@@ -47,6 +47,10 @@ describe("Number functions", () => {
       expect(numberToSigFigsSI(undefined)).toBe("undefined");
     });
 
+    it("ignores values larger than 1e15", () => {
+      expect(numberToSigFigsSI(1e30)).toBe(1e30.toString());
+    });
+
   });
 
 });

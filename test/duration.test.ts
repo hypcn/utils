@@ -33,11 +33,16 @@ describe("Duration functions", () => {
       expect(millisToPrettyDuration(1234567)).toBe("20 mins, 34 secs");
       expect(millisToPrettyDuration(123456789)).toBe("1 day, 10 hours");
       expect(millisToPrettyDuration(9876543210)).toBe("3 months, 24 days");
+      expect(millisToPrettyDuration(98765432101)).toBe("3 years, 2 months");
     });
 
     it("handles the specified number of different units correctly", () => {
       expect(millisToPrettyDuration(9876543210, 4)).toBe("3 months, 24 days, 7 hours, 29 mins");
       expect(millisToPrettyDuration(123456, 4)).toBe("2 mins, 3 secs, 456 ms");
+    });
+
+    it("handles undefined milliseconds parameter", () => {
+      expect(millisToPrettyDuration(undefined!)).toBe("0 ms");
     });
 
   });
