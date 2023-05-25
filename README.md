@@ -34,7 +34,7 @@ async func() {
 ## Numbers
 
 ```typescript
-import { clamp, sum, numberToSigFigs, numberToSigFigsSI, ratioToPercentage, numberToBytes } from "@hypericon/utils";
+import { clamp, sum, numberToSigFigs, numberToSigFigsSI, ratioToPercentage, numberToBytes, randomRange, randomIntRange } from "@hypericon/utils";
 
 // Clamp a value to a given range
 clamp(-12, 100, 200); // 100
@@ -70,6 +70,11 @@ numberToBytes(120_000_000); // "114 MB"
 numberToBytes(120_000_000_000); // "112 GB"
 numberToBytes(120_000, { decimals: 2 }); // "117.19 kB"
 numberToBytes(120_000, { tenCubed: true }); // "120 kB"
+
+// Generate a random number in a given range
+randomRange(10, 100); // e.g. 42.229661111154805
+// Generate a random *integer* in a given range
+randomIntRange(10, 100); // e.g. 71
 ```
 
 ## Dates & Times

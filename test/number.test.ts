@@ -1,4 +1,4 @@
-import { clamp, numberToBytes, numberToSigFigs, numberToSigFigsSI, ratioToPercentage, sum } from "../src";
+import { clamp, numberToBytes, numberToSigFigs, numberToSigFigsSI, randomIntRange, randomRange, ratioToPercentage, sum } from "../src";
 
 describe("Number functions", () => {
 
@@ -115,6 +115,31 @@ describe("Number functions", () => {
       expect(numberToBytes(120_000, { tenCubed: true })).toBe("120 kB");
       expect(numberToBytes(120_000_000, { tenCubed: true })).toBe("120 MB");
       expect(numberToBytes(120_000_000_000, { tenCubed: true })).toBe("120 GB");
+    });
+
+  });
+
+  describe("randomRange", () => {
+
+    it("generates a number", () => {
+      const min = 10;
+      const max = 100;
+      const n = randomRange(min, max);
+      expect(n).toBeGreaterThanOrEqual(min);
+      expect(n).toBeLessThanOrEqual(max);
+    });
+
+  });
+
+  describe("randomIntRange", () => {
+
+    it("generates an integer", () => {
+      const min = 10;
+      const max = 100;
+      const n = randomIntRange(min, max);
+      expect(n).toBeGreaterThanOrEqual(min);
+      expect(n).toBeLessThanOrEqual(max);
+      expect(Math.round(n)).toBe(n);
     });
 
   });

@@ -121,3 +121,25 @@ export function numberToBytes(bytes: number, opts?: { decimals?: number, tenCube
 
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+/**
+ * Get a random number in a given range
+ * @param min 
+ * @param max 
+ * @returns 
+ */
+export function randomRange(min: number, max: number): number {
+  return Math.random() * (max - min) + min;
+}
+
+/**
+ * Get a random integer in a given range, max and min inclusive
+ * @param min 
+ * @param max 
+ * @returns 
+ */
+export function randomIntRange(min: number, max: number): number {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); // The maximum is inclusive and the minimum is inclusive
+}
