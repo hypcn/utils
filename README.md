@@ -97,7 +97,21 @@ timestampToDateTime(1679051024444, { secs: false }); // "2023-03-17 11:03"
 ## Durations
 
 ```typescript
-import { millisTo24Hour, millisToPrettyDuration } from "@hypericon/utils";
+import { prettyRelativeTime, millisTo24Hour, millisToPrettyDuration } from "@hypericon/utils";
+
+// Build a display string specifying the relative time to a given Date from the current time,
+// or specify another Date as the offset point of reference
+const now = Date.now();
+prettyRelativeTime(now - 100); // "just now"
+prettyRelativeTime(now - 50_000); // "50 seconds ago"
+prettyRelativeTime(now - 5 * 60 * 1000); // "5 minutes ago"
+prettyRelativeTime(now - 1 * 60 * 60 * 1000); // "an hour ago"
+prettyRelativeTime(now - 1 * 24 * 60 * 60 * 1000); // "yesterday"
+
+prettyRelativeTime(new Date("2020-01-31"), new Date("2020-02-01")); // "yesterday"
+prettyRelativeTime(new Date("2020-02-02"), new Date("2020-02-01")); // "tomorrow"
+prettyRelativeTime(new Date("2020-01-25"), new Date("2020-02-01")); // "last week"
+prettyRelativeTime(new Date("2020-01-02"), new Date("2020-02-01")); // "last month"
 
 // Convert a number fo milliseconds to a 24-hour HH:mm string
 millisTo24Hour(123456789); // "10:18"

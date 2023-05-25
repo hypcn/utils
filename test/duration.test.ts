@@ -1,6 +1,103 @@
-import { millisTo24Hour, millisToPrettyDuration } from "../src";
+import { millisTo24Hour, millisToPrettyDuration, prettyRelativeTime } from "../src";
 
 describe("Duration functions", () => {
+
+  describe("prettyRelativeTime", () => {
+
+    it("handles 'just now'", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 100)).toBe("just now");
+      expect(prettyRelativeTime(now - 10_000)).toBe("just now");
+      expect(prettyRelativeTime(now + 100)).toBe("just now");
+      expect(prettyRelativeTime(now + 10_000)).toBe("just now");
+    });
+
+    it("handles seconds", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 50_000)).toBe("50 seconds ago");
+      expect(prettyRelativeTime(now + 50_000)).toBe("in 50 seconds");
+    });
+
+    it("handles minutes", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 1 * 61 * 1000)).toBe("a minute ago");
+      expect(prettyRelativeTime(now + 1 * 61 * 1000)).toBe("in a minute");
+      expect(prettyRelativeTime(now - 5 * 61 * 1000)).toBe("5 minutes ago");
+      expect(prettyRelativeTime(now + 5 * 61 * 1000)).toBe("in 5 minutes");
+    });
+
+    it("handles hours", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 1 * 61 * 60 * 1000)).toBe("an hour ago");
+      expect(prettyRelativeTime(now + 1 * 61 * 60 * 1000)).toBe("in an hour");
+      expect(prettyRelativeTime(now - 5 * 61 * 60 * 1000)).toBe("5 hours ago");
+      expect(prettyRelativeTime(now + 5 * 61 * 60 * 1000)).toBe("in 5 hours");
+    });
+
+    it("handles days", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 1 * 24.1 * 60 * 60 * 1000)).toBe("yesterday");
+      expect(prettyRelativeTime(now + 1 * 24.1 * 60 * 60 * 1000)).toBe("tomorrow");
+      expect(prettyRelativeTime(now - 5 * 24.1 * 60 * 60 * 1000)).toBe("5 days ago");
+      expect(prettyRelativeTime(now + 5 * 24.1 * 60 * 60 * 1000)).toBe("in 5 days");
+    });
+
+    it("handles weeks", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 1 * 7.1 * 24 * 60 * 60 * 1000)).toBe("last week");
+      expect(prettyRelativeTime(now + 1 * 7.1 * 24 * 60 * 60 * 1000)).toBe("in a week");
+      expect(prettyRelativeTime(now - 3 * 7.1 * 24 * 60 * 60 * 1000)).toBe("3 weeks ago");
+      expect(prettyRelativeTime(now + 3 * 7.1 * 24 * 60 * 60 * 1000)).toBe("in 3 weeks");
+    });
+
+    it("handles months", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 1 * 31 * 24 * 60 * 60 * 1000)).toBe("last month");
+      expect(prettyRelativeTime(now + 1 * 31 * 24 * 60 * 60 * 1000)).toBe("in a month");
+      expect(prettyRelativeTime(now - 5 * 31 * 24 * 60 * 60 * 1000)).toBe("5 months ago");
+      expect(prettyRelativeTime(now + 5 * 31 * 24 * 60 * 60 * 1000)).toBe("in 5 months");
+    });
+
+    it("handles years", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 1 * 366 * 24 * 60 * 60 * 1000)).toBe("last year");
+      expect(prettyRelativeTime(now + 1 * 366 * 24 * 60 * 60 * 1000)).toBe("in a year");
+      expect(prettyRelativeTime(now - 5 * 366 * 24 * 60 * 60 * 1000)).toBe("5 years ago");
+      expect(prettyRelativeTime(now + 5 * 366 * 24 * 60 * 60 * 1000)).toBe("in 5 years");
+    });
+
+    it("handles centuries", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 1 * 101 * 365 * 24 * 60 * 60 * 1000)).toBe("last century");
+      expect(prettyRelativeTime(now + 1 * 101 * 365 * 24 * 60 * 60 * 1000)).toBe("in a century");
+      expect(prettyRelativeTime(now - 5 * 101 * 365 * 24 * 60 * 60 * 1000)).toBe("5 centuries ago");
+      expect(prettyRelativeTime(now + 5 * 101 * 365 * 24 * 60 * 60 * 1000)).toBe("in 5 centuries");
+    });
+
+    it("handles millenia", () => {
+      const now = Date.now();
+      expect(prettyRelativeTime(now - 1 * 1001 * 365 * 24 * 60 * 60 * 1000)).toBe("last millennium");
+      expect(prettyRelativeTime(now + 1 * 1001 * 365 * 24 * 60 * 60 * 1000)).toBe("in a millennium");
+      expect(prettyRelativeTime(now - 5 * 1001 * 365 * 24 * 60 * 60 * 1000)).toBe("5 millennia ago");
+      expect(prettyRelativeTime(now + 5 * 1001 * 365 * 24 * 60 * 60 * 1000)).toBe("in 5 millennia");
+    });
+
+    it("handles different date types", () => {
+      const fiveDaysAgo = Date.now() - (5 * 24 * 60 * 60 * 1000);
+      expect(prettyRelativeTime(fiveDaysAgo)).toBe("5 days ago");
+      expect(prettyRelativeTime(new Date(fiveDaysAgo))).toBe("5 days ago");
+      expect(prettyRelativeTime(new Date(fiveDaysAgo).toISOString())).toBe("5 days ago");
+    });
+
+    it("can use the relativeTo argument", () => {
+      expect(prettyRelativeTime(new Date("2020-01-31"), new Date("2020-02-01"))).toBe("yesterday");
+      expect(prettyRelativeTime(new Date("2020-02-02"), new Date("2020-02-01"))).toBe("tomorrow");
+      expect(prettyRelativeTime(new Date("2020-01-25"), new Date("2020-02-01"))).toBe("last week");
+      expect(prettyRelativeTime(new Date("2020-01-02"), new Date("2020-02-01"))).toBe("last month");
+      expect(prettyRelativeTime(0, 10_000)).toBe("just now");
+    });
+
+  });
 
   describe("millisTo24Hour", () => {
 
