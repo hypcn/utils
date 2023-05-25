@@ -4,7 +4,7 @@
  * @param obj 
  * @returns 
  */
-export function dereference<T extends any>(obj: T): undefined extends T ? undefined : T {
+export function dereference<T>(obj: T): T {
   if (obj === undefined) return undefined as any;
   if (obj === null) return null as any;
   return JSON.parse(JSON.stringify(obj));
