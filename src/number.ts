@@ -57,6 +57,10 @@ export function numberToSigFigsSI<T extends number | undefined>(value: T, sigFig
     return "undefined";
   }
 
+  if (value === 0) {
+    return (0).toFixed(Math.max(0, sigFigs - 1));
+  }
+
   const siSuffixes = [
     { value: 1e-15, symbol: 'f' },
     { value: 1e-12, symbol: 'p' },

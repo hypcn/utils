@@ -40,6 +40,9 @@ describe("Number functions", () => {
   describe("numberToSigFigsSI", () => {
 
     it("formats number as a string with the correct sig figs and SI suffix", () => {
+      expect(numberToSigFigsSI(0)).toBe("0.00");
+      expect(numberToSigFigsSI(0, 0)).toBe("0");
+      expect(numberToSigFigsSI(0, 4)).toBe("0.000");
       expect(numberToSigFigsSI(123456, 4)).toBe("123.5k");
       expect(numberToSigFigsSI(123, 2)).toBe("120");
       expect(numberToSigFigsSI(1.23, 3)).toBe("1.23");
