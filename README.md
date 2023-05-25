@@ -19,7 +19,7 @@ npm i @hypericon/utils
 ## Misc
 
 ```typescript
-import { dereference, wait } from "@hypericon/utils";
+import { dereference, wait, isObject, mergeDeep } from "@hypericon/utils";
 
 const o = { an: "object" };
 const d = dereference(o);
@@ -30,6 +30,45 @@ console.log(dereference(undefined)); // undefined
 async func() {
   await wait(2000); // waits for 2,000 ms
 }
+
+isObject(undefined); // false
+isObject("dog"); // false
+isObject(null); // false
+isObject([1, 2, 3]); // false
+isObject({ an: "object" }); // true
+
+mergeDeep({ an: "object" }, undefined); // { an: "object" }
+mergeDeep(undefined, { an: "object" }); // { an: "object" }
+mergeDeep({ a: 1 }, { b: 2 }, { c: 3 }); // { a: 1, b: 2, c: 3 }
+
+mergeDeep(
+  {
+    a: {
+      b: 123,
+      c: 456, // `c` is unchanged
+    },
+    r: 77,
+    list: [1,2,3],
+  },
+  {
+    a: {
+      b: 222, // `b` is updated
+      d: 444, // `d` is added
+    },
+    e: 555, // `e` is added
+    r: undefined, // `r` is removed
+    list: [10, 20, 30], // `list` is replaced
+  },
+);
+// {
+//   a: {
+//     b: 222,
+//     c: 456,
+//     d: 444
+//   },
+//   e: 555,
+//   list: [10, 20, 30],
+// }
 ```
 
 ## Numbers
