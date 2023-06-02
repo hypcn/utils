@@ -1,4 +1,4 @@
-import { clamp, numberToBytes, numberToSigFigs, numberToSigFigsSI, randomIntRange, randomRange, ratioToPercentage, sum } from "../src";
+import { clamp, numberToBytes, numberToSigFigs, numberToSigFigsSI, randomIntRange, randomRange, ratioToPercentage, sum, toNumberOrUndefined } from "../src";
 
 describe("Number functions", () => {
 
@@ -18,6 +18,25 @@ describe("Number functions", () => {
     });
     it("handles incorrect parameters", () => {
       expect(sum(undefined, null, NaN, 5)).toBe(5);
+    });
+  });
+
+  describe("toNumberOrUndefined", () => {
+    it("converts numbers", () => {
+      expect(toNumberOrUndefined(1)).toBe(1);
+      expect(toNumberOrUndefined(0)).toBe(0);
+      expect(toNumberOrUndefined(Number.MAX_SAFE_INTEGER)).toBe(Number.MAX_SAFE_INTEGER);
+    });
+    it("converts strings", () => {
+      expect(toNumberOrUndefined("12")).toBe(12);
+      expect(toNumberOrUndefined("-12.5")).toBe(-12.5);
+    });
+    it("converts other things", () => {
+      expect(toNumberOrUndefined(null)).toBe(undefined);
+      expect(toNumberOrUndefined(undefined)).toBe(undefined);
+      expect(toNumberOrUndefined({ an: "object" })).toBe(undefined);
+      expect(toNumberOrUndefined([1, 2, 3])).toBe(undefined);
+      expect(toNumberOrUndefined(true)).toBe(undefined);
     });
   });
 

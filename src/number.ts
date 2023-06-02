@@ -26,6 +26,19 @@ export function sum(...numbers: (number | undefined | null)[]) {
 }
 
 /**
+ * Convert a given number or string to a number, other types to undefined.
+ * If the resulting number is NaN, undefined is returned.
+ * @param value 
+ * @returns 
+ */
+export function toNumberOrUndefined(value: any): number | undefined {
+  if (value === null || value === undefined) return undefined;
+  if (typeof value !== "string" && typeof value !== "number") return undefined;
+  const n = Number(value);
+  return Number.isNaN(n) ? undefined : n;
+}
+
+/**
  * Round a number to a given number of significant figures.
  * This avoids the exponent strings from `toPrecision(x)`.
  * If `undefined` is provided as the value, `undefined` is returned.

@@ -34,7 +34,7 @@ async func() {
 ## Numbers
 
 ```typescript
-import { clamp, sum, numberToSigFigs, numberToSigFigsSI, ratioToPercentage, numberToBytes, randomRange, randomIntRange } from "@hypericon/utils";
+import { clamp, sum, toNumberOrUndefined, numberToSigFigs, numberToSigFigsSI, ratioToPercentage, numberToBytes, randomRange, randomIntRange } from "@hypericon/utils";
 
 // Clamp a value to a given range
 clamp(-12, 100, 200); // 100
@@ -42,6 +42,12 @@ clamp(-12, 100, 200); // 100
 // Find the sum of some number, ignoring undefined, null, and NaN
 sum(1, 2, 3); // 6
 sum(undefined, null, NaN, 5); // 5
+
+// Parse a value to a number, or undefined if it would be NaN
+toNumberOrUndefined(12); // 12
+toNumberOrUndefined("12"); // "12"
+toNumberOrUndefined(null); // undefined
+toNumberOrUndefined("dog"); // undefined
 
 // Round a value to a number of significant figured (default: 3)
 numberToSigFigs(3579); // 3580
