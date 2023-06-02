@@ -32,7 +32,9 @@ export function sum(...numbers: (number | undefined | null)[]) {
  * @returns 
  */
 export function toNumberOrUndefined(value: any): number | undefined {
-  if (value === null || value === undefined) return undefined;
+  if (value === null) return undefined;
+  if (value === undefined) return undefined;
+  if (value === "") return undefined;
   if (typeof value !== "string" && typeof value !== "number") return undefined;
   const n = Number(value);
   return Number.isNaN(n) ? undefined : n;
