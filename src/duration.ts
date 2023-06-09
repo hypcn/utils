@@ -87,6 +87,41 @@ export function millisTo24Hour(ms: number, opts?: { roundUp?: boolean }): string
 }
 
 /**
+ * Format a number of milliseconds appropriately for a media player, as (H:)MM:SS:(.mmm)
+ * 
+ * Examples:
+ * ```ts
+ * (123456) -> "02:03"
+ * (3599999) -> "59:59"
+ * (3661000) -> "1:01:01"
+ * (123456, true) -> "02:03.456"
+ * (-123456) -> "-02:03"
+ * (-123456, true) -> "-02:03.456"
+ * ```
+ * @param ms 
+ * @param includeMillis 
+ * @returns 
+ */
+export function millisToMedia(ms: number, includeMillis: boolean = false): string {
+  if (ms === undefined || ms === null) ms = 0;
+  const isNegative = ms < 0;
+  ms = Math.abs(ms);
+
+  const hours = Math.floor(ms / 3600000);
+  const minutes = Math.floor((ms % 3600000) / 60000);
+  const seconds = Math.floor((ms % 60000) / 1000);
+  const millisRemaining = ms % 1000;
+
+  const hoursStr = hours > 0 ? `${hours.toString()}:` : '';
+  const minutesStr = minutes.toString().padStart(2, '0');
+  const secondsStr = seconds.toString().padStart(2, '0');
+  const millisecondsStr = (includeMillis === true) ? `.${millisRemaining.toString().padStart(3, '0')}` : '';
+  const sign = isNegative ? "-" : "";
+
+  return `${sign}${hoursStr}${minutesStr}:${secondsStr}${millisecondsStr}`;
+}
+
+/**
  * Convert a number of milliseconds to a simple duration string with a configurable number of units.
  * Available units are: ms, secs, mins, hours, months, years
  * @example 12345 -> "12 secs, 345 ms"

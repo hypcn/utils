@@ -1,4 +1,4 @@
-import { millisTo24Hour, millisToPrettyDuration, prettyRelativeTime } from "../src";
+import { millisTo24Hour, millisToMedia, millisToPrettyDuration, prettyRelativeTime } from "../src";
 
 describe("Duration functions", () => {
 
@@ -119,6 +119,52 @@ describe("Duration functions", () => {
 
     it("handles values greater than 24 hours", () => {
       expect(millisTo24Hour(12345678912345)).toBe("19:15");
+    });
+
+  });
+
+  describe("millisToMedia", () => {
+
+    test('should format milliseconds correctly without milliseconds term', () => {
+      expect(millisToMedia(123456)).toBe('02:03');
+      expect(millisToMedia(60000)).toBe('01:00');
+      expect(millisToMedia(3599999)).toBe('59:59');
+      expect(millisToMedia(3600000)).toBe('1:00:00');
+      expect(millisToMedia(3661000)).toBe('1:01:01');
+    });
+
+    test('should format milliseconds correctly with milliseconds term', () => {
+      expect(millisToMedia(123456, true)).toBe('02:03.456');
+      expect(millisToMedia(60000, true)).toBe('01:00.000');
+      expect(millisToMedia(3599999, true)).toBe('59:59.999');
+      expect(millisToMedia(3600000, true)).toBe('1:00:00.000');
+      expect(millisToMedia(3661000, true)).toBe('1:01:01.000');
+    });
+
+    test('should handle edge cases', () => {
+      expect(millisToMedia(undefined as any)).toBe('00:00');
+      expect(millisToMedia(0)).toBe('00:00');
+      expect(millisToMedia(0, true)).toBe('00:00.000');
+      expect(millisToMedia(999)).toBe('00:00');
+      expect(millisToMedia(999, true)).toBe('00:00.999');
+      expect(millisToMedia(3599999)).toBe('59:59');
+      expect(millisToMedia(3599999, true)).toBe('59:59.999');
+    });
+
+    test('should handle negative numbers without milliseconds term', () => {
+      expect(millisToMedia(-123456)).toBe('-02:03');
+      expect(millisToMedia(-60000)).toBe('-01:00');
+      expect(millisToMedia(-3599999)).toBe('-59:59');
+      expect(millisToMedia(-3600000)).toBe('-1:00:00');
+      expect(millisToMedia(-3661000)).toBe('-1:01:01');
+    });
+
+    test('should handle negative numbers with milliseconds term', () => {
+      expect(millisToMedia(-123456, true)).toBe('-02:03.456');
+      expect(millisToMedia(-60000, true)).toBe('-01:00.000');
+      expect(millisToMedia(-3599999, true)).toBe('-59:59.999');
+      expect(millisToMedia(-3600000, true)).toBe('-1:00:00.000');
+      expect(millisToMedia(-3661000, true)).toBe('-1:01:01.000');
     });
 
   });

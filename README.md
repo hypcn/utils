@@ -117,7 +117,7 @@ timestampToDateTime(1679051024444, { secs: false }); // "2023-03-17 11:03"
 ## Durations
 
 ```typescript
-import { prettyRelativeTime, millisTo24Hour, millisToPrettyDuration } from "@hypericon/utils";
+import { prettyRelativeTime, millisTo24Hour, millisToMedia, millisToPrettyDuration } from "@hypericon/utils";
 
 // Build a display string specifying the relative time to a given Date from the current time,
 // or specify another Date as the offset point of reference
@@ -133,10 +133,17 @@ prettyRelativeTime(new Date("2020-02-02"), new Date("2020-02-01")); // "tomorrow
 prettyRelativeTime(new Date("2020-01-25"), new Date("2020-02-01")); // "last week"
 prettyRelativeTime(new Date("2020-01-02"), new Date("2020-02-01")); // "last month"
 
-// Convert a number fo milliseconds to a 24-hour HH:mm string
+// Convert a number of milliseconds to a 24-hour HH:mm string
 millisTo24Hour(123456789); // "10:18"
 millisTo24Hour(-123456789); // "13:42"
 millisTo24Hour(12345678912345); // "19:15"
+
+// Format a number of milliseconds for a media player
+millisToMedia(123456) // "02:03"
+millisToMedia(3661000) // "1:01:01"
+millisToMedia(123456, true) // "02:03.456"
+millisToMedia(-123456) // "-02:03"
+millisToMedia(-123456, true) // "-02:03.456"
 
 // Format a number of milliseconds as a human-readable string with appropriate units. Includes up to 2 distinct units be default.
 millisToPrettyDuration(12345); // "12 secs, 345 ms"
